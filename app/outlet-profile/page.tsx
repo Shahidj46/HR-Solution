@@ -123,7 +123,7 @@ export default function OutletProfilePage() {
           </Button>
           <Button onClick={handleAddShop} className="bg-purple-600 hover:bg-purple-700">
             <Plus className="w-4 h-4 mr-2" />
-            Add Shop
+            Add Outlet
           </Button>
         </div>
       </div>
