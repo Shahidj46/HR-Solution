@@ -100,36 +100,61 @@ export default function OutletProfilePage() {
     )
   }
 
+  // Shared Action Buttons Component
+  const ActionButtons = ({ outlet }: { outlet: (typeof mockOutlets)[0] }) => (
+    <div className="flex items-center gap-3">
+      <button onClick={() => handleEdit(outlet.id)} className="text-blue-600 hover:text-blue-800 p-1">
+        <Edit className="w-4 h-4" />
+      </button>
+      <button onClick={() => handleView(outlet.id)} className="text-green-600 hover:text-green-800 p-1">
+        <Eye className="w-4 h-4" />
+      </button>
+      <label className="relative inline-flex items-center cursor-pointer">
+        <input
+          type="checkbox"
+          checked={outlet.status === "Active"}
+          onChange={() => toggleStatus(outlet.id)}
+          className="sr-only peer"
+        />
+        <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-600"></div>
+      </label>
+    </div>
+  )
+
   return (
-    <div className="mx-auto max-w-7xl">
-      <div className="mb-6 flex items-center justify-between">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6">
+      {/* Header Section */}
+      <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Outlet Profile</h1>
           <p className="text-sm text-gray-500 mt-1">Manage all outlet information</p>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="relative w-72">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <div className="relative w-full sm:w-72">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <Input
               placeholder="Search by shop name or ID..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-10 w-full"
             />
           </div>
-          <Button variant="outline" onClick={handleDownloadExcel}>
-            <Download className="w-4 h-4 mr-2" />
-            Excel
-          </Button>
-          <Button onClick={handleAddShop} className="bg-purple-600 hover:bg-purple-700">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Outlet
-          </Button>
+          <div className="flex gap-3">
+            <Button variant="outline" onClick={handleDownloadExcel} className="flex-1 sm:flex-none">
+              <Download className="w-4 h-4 mr-2" />
+              Excel
+            </Button>
+            <Button onClick={handleAddShop} className="bg-purple-600 hover:bg-purple-700 flex-1 sm:flex-none">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Outlet
+            </Button>
+          </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* Filters Section */}
+      <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {/* Shop Name Filter */}
           <Select value={shopNameFilter} onValueChange={setShopNameFilter}>
             <SelectTrigger>
@@ -174,9 +199,11 @@ export default function OutletProfilePage() {
         </div>
       </div>
 
-      {/* Table */}
+      {/* Responsive Content Area */}
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
+        
+        {/* Desktop Table View (Hidden on Mobile) */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
@@ -210,23 +237,7 @@ export default function OutletProfilePage() {
               {paginatedOutlets.map((outlet) => (
                 <tr key={outlet.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <div className="flex items-center gap-3">
-                      <button onClick={() => handleEdit(outlet.id)} className="text-blue-600 hover:text-blue-800">
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button onClick={() => handleView(outlet.id)} className="text-green-600 hover:text-green-800">
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={outlet.status === "Active"}
-                          onChange={() => toggleStatus(outlet.id)}
-                          className="sr-only peer"
-                        />
-                        <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-600"></div>
-                      </label>
-                    </div>
+                    <ActionButtons outlet={outlet} />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{outlet.shopId}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{outlet.shopName}</td>
@@ -241,10 +252,50 @@ export default function OutletProfilePage() {
           </table>
         </div>
 
+        {/* Mobile Card View (Hidden on Desktop) */}
+        <div className="md:hidden">
+          <div className="divide-y divide-gray-200">
+            {paginatedOutlets.map((outlet) => (
+              <div key={outlet.id} className="p-4 space-y-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-900">{outlet.shopName}</h3>
+                    <p className="text-xs text-gray-500">{outlet.shopId}</p>
+                  </div>
+                  <ActionButtons outlet={outlet} />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div>
+                        <span className="text-gray-500 block">Trade License</span>
+                        <span className="font-medium">{outlet.tradeLicenseExp}</span>
+                    </div>
+                    <div>
+                        <span className="text-gray-500 block">Tenancy</span>
+                        <span className="font-medium">{outlet.tenancyExp}</span>
+                    </div>
+                    <div>
+                        <span className="text-gray-500 block">Fire Cert.</span>
+                        <span className="font-medium">{outlet.fireCertificateExp}</span>
+                    </div>
+                    <div>
+                        <span className="text-gray-500 block">Hassantuk</span>
+                        <span className="font-medium">{outlet.hassantukExp}</span>
+                    </div>
+                     <div>
+                        <span className="text-gray-500 block">Immigration</span>
+                        <span className="font-medium">{outlet.immigrationCardExp}</span>
+                    </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Pagination */}
-        <div className="bg-white px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-          <div className="text-sm text-gray-600">
-            Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, filteredOutlets.length)} of{" "}
+        <div className="bg-white px-4 sm:px-6 py-4 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-sm text-gray-600 text-center sm:text-left">
+            Showing {filteredOutlets.length > 0 ? startIndex + 1 : 0} to {Math.min(startIndex + itemsPerPage, filteredOutlets.length)} of{" "}
             {filteredOutlets.length} outlets
           </div>
           <div className="flex items-center gap-2">
@@ -271,7 +322,7 @@ export default function OutletProfilePage() {
               variant="outline"
               size="sm"
               onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
+              disabled={currentPage === totalPages || totalPages === 0}
             >
               <ChevronRight className="w-4 h-4" />
             </Button>
