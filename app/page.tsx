@@ -5,9 +5,14 @@ import { Users, UserCheck, UserX, Car, DollarSign, Clock } from "lucide-react"
 
 export default function DashboardPage() {
   return (
-    <div className="mx-auto max-w-7xl">
+    // Added padding (px) to prevent content touching edges on mobile
+    // Added vertical padding (py) for better spacing
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+      
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      {/* Updated to sm:grid-cols-2 for better layout on tablets/large phones */}
+      {/* Reduced gap on mobile (gap-4) for better screen real estate usage */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
         <MetricCard
           title="Total Employees"
           value="1,248"
@@ -65,11 +70,12 @@ export default function DashboardPage() {
       </div>
 
       {/* Charts Section */}
+      {/* Stacks vertically on mobile (grid-cols-1), side-by-side on desktop (lg:grid-cols-3) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 w-full">
           <AttendanceChart />
         </div>
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 w-full">
           <SalarySnapshot />
         </div>
       </div>
