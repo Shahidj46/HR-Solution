@@ -32,7 +32,7 @@ export default function DashboardPage() {
           iconColor="bg-green-500"
         />
         <MetricCard
-          title="On Leave"
+          title="On Leaves"
           value="89"
           change="-3%"
           changeLabel="vs last month"
