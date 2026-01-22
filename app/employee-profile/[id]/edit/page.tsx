@@ -82,7 +82,7 @@ export default function EditEmployeePage() {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <Sidebar />
+   
 
       <main className="flex-1 p-8">
         <div className="mx-auto max-w-6xl">

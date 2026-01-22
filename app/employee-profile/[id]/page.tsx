@@ -8,7 +8,7 @@ import { useRouter, useParams } from "next/navigation"
 // Mock data - in a real app, this would come from your database
 const mockEmployeeData = {
   id: "EMP001",
-  fullName: "John Smith",
+  fullName: "Shohidul Islam",
   mobile: "+1 234-567-8901",
   employeePicture: "/placeholder.svg?height=200&width=200",
   designation: "Manager",
@@ -42,7 +42,7 @@ export default function ViewEmployeePage() {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <Sidebar />
+
 
       <main className="flex-1 p-8">
         <div className="mx-auto max-w-6xl">
